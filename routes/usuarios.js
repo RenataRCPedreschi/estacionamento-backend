@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const Usuario = require("../models/usuario");
+const { schemaUsuario, schemaUsuarioPut } = require("../utils/validate/schemas");
 
 const router = Router();
 
-router.post("/usuarios", async (req, res) => {
+router.post("/usuarios", schemaUsuario, async (req, res) => {
     try {
         const { nome, email, senha } = req.body;
         const usuario = await Usuario.create({ nome, email, senha });
@@ -36,7 +37,7 @@ router.get("/usuarios", async (req, res) => {
     }
 });
 
-router.put("/usuarios/:id", async (req, res) => {
+router.put("/usuarios/:id", schemaUsuarioPut, async (req, res) => {
     const { nome, email, senha } = req.body;
     const usuario = await Usuario.findByPk(req.params.id);
 
