@@ -4,12 +4,14 @@ const { connection, authenticate } = require("./database/database");
 const cors = require("cors");
 
 const routeUsuarios = require("./routes/usuarios");
+const routeVeiculos = require("./routes/veiculos");
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:3000" }));
-app.use(routeUsuarios);
 
+app.use(routeUsuarios);
+app.use(routeVeiculos)
 
 authenticate(connection);
 connection.sync();

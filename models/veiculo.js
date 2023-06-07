@@ -13,11 +13,11 @@ const Veiculo = connection.define("veiculo", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  Modelo: {
+  modelo: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  Cor: {
+  cor: {
     type: DataTypes.STRING,
     allowNull: true,
   }
@@ -27,3 +27,5 @@ Usuario.hasMany(Veiculo, {
   onDelete: "CASCADE"
 });
 Veiculo.belongsTo(Usuario);
+
+module.exports = Veiculo;
