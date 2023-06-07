@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { connection } = require("../db/db");
+const { connection } = require ("../database/database");
 
 const Vaga = connection.define('vaga', {
     id: {
@@ -19,11 +19,13 @@ const Vaga = connection.define('vaga', {
     },
     tipo: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue:"carro"
     },
     status: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue:"livre"
     },
 })
 
