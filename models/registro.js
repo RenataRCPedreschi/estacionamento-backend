@@ -2,7 +2,7 @@ const { DataTypes, UUID } = require("sequelize");
 const { connection } = require("../database/database");
 const Usuario = require("./usuario");
 
-const Registro = connection.define('usuario', {
+const Registro = connection.define('registro', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
