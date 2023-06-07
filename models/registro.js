@@ -9,11 +9,11 @@ const Registro = connection.define('registro', {
         allowNull: false,
         primaryKey: true
     },
-    DataHora_Chegada: {
+    data_inicio: {
         type: DataTypes.DATE,
         allowNull: false
     },
-    DataHora_Saida: {
+    data_fim: {
         type: DataTypes.DATE,
         allowNull: false,
         unique: true
@@ -26,5 +26,6 @@ Vaga.hasMany(Registro, {
 // Faltando implementar o model de avaliacao
 Registro.belongsTo(Avaliacao);
 Registro.belongsTo(Usuario);
+Registro.belongsTo(Vaga);
 Usuario.hasMany(Registro, {onDelete: "CASCADE"});
 module.exports = Usuario;
