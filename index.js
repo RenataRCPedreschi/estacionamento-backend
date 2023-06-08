@@ -7,6 +7,7 @@ const { errors } = require("celebrate");
 const routeUsuarios = require("./routes/usuarios");
 const routeVeiculos = require("./routes/veiculos");
 const routeVagas = require("./routes/vagas")
+const routeAuth = require("./routes/auth.routes")
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(errors());
 app.use(routeUsuarios);
 app.use(routeVeiculos);
 app.use(routeVagas);
+app.use(routeAuth);
 
 authenticate(connection);
 connection.sync();

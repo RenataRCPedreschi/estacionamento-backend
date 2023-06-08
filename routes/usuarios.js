@@ -1,24 +1,12 @@
 const { Router } = require("express");
 const Usuario = require("../models/usuario");
-const { schemaUsuario, schemaUsuarioPut } = require("../utils/validate/schemas");
+const authMiddleware = require("../middlewares/auth.middleware");
+const bcrypt = require('bcryptjs');
 
 const router = Router();
 
-router.post("/usuarios", schemaUsuario, async (req, res) => {
-    try {
-        const { nome, email, senha } = req.body;
-        const usuario = await Usuario.create({ nome, email, senha });
-
-        res.status(201).json(usuario);
-    } 
-    catch(error) {
-        res.status(500).json({ message: "Um erro aconteceu." });
-    }
-});
-
-router.get("/usuarios", async (req, res) => {
+router.get("/usuarios", authMiddleware(), async (req, res) => {
     const { id } = req.query;
-
     try {
         if (id) {
             const usuario = await Usuario.findByPk(id);
@@ -31,30 +19,37 @@ router.get("/usuarios", async (req, res) => {
 
         const usuarios = await Usuario.findAll();
         return res.status(200).json(usuarios);
-    } 
-    catch(error) {
+    }
+    catch (error) {
         res.status(500).json({ message: "Um erro aconteceu." });
     }
 });
 
-router.put("/usuarios/:id", schemaUsuarioPut, async (req, res) => {
-    const { nome, email, senha } = req.body;
-    const usuario = await Usuario.findByPk(req.params.id);
+router.put("/usuarios/:id", authMiddleware(), async (req, res) => {
+    const { nome, email } = req.body;
+    let { senha } = req.body;
+    const saltRounds = 10;
 
     try {
+        const usuario = await Usuario.findByPk(req.params.id);
         if (usuario) {
+            if (req.auth.id !== req.params.id) return res.status(404).json({ message: "Usuário editado deve ser o mesmo logado." });
+            if (senha) {
+                const hashedPassword = await bcrypt.hash(senha, saltRounds);
+                senha = hashedPassword;
+            }
             await Usuario.update({ nome, email, senha }, { where: { id: req.params.id } });
-            res.json({ message: "Usuário editado com sucesso!" });
+            return res.json({ message: "Usuário editado com sucesso!" });
         } else {
-            res.status(404).json({ message: "Usuário não encontrado." });
+            return res.status(404).json({ message: "Usuário não encontrado." });
         }
-    } 
-    catch(error) {
-        res.status(500).json({ message: "Um erro aconteceu." });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Um erro aconteceu." });
     }
 });
 
-router.delete("/usuarios/:id", async (req, res) => {
+router.delete("/usuarios/:id", authMiddleware(), async (req, res) => {
     const usuario = await Usuario.findByPk(req.params.id);
 
     try {
@@ -64,7 +59,7 @@ router.delete("/usuarios/:id", async (req, res) => {
         } else {
             res.status(404).json({ message: "Usuário não encontrado." });
         }
-    } catch(error) {
+    } catch (error) {
         res.status(500).json({ message: "Um erro aconteceu." });
     }
 });
