@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const Veiculo = require("../models/veiculo");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = Router();
 
-router.get("/veiculos", async (req, res) => {
+router.get("/veiculos", authMiddleware(), async (req, res) => {
   const { id } = req.query;
 
   try {
@@ -24,7 +25,7 @@ router.get("/veiculos", async (req, res) => {
   }
 });
 
-router.post("/veiculos", async (req, res) => {
+router.post("/veiculos", authMiddleware(), async (req, res) => {
   const { placa, modelo, cor, usuarioId } = req.body;
 
   try {
@@ -36,7 +37,7 @@ router.post("/veiculos", async (req, res) => {
   }
 });
 
-router.put("/veiculos/:id", async (req, res) => {
+router.put("/veiculos/:id", authMiddleware(), async (req, res) => {
   const { placa, modelo, cor, usuarioId } = req.body;
   const { id } = req.params;
 
@@ -55,7 +56,7 @@ router.put("/veiculos/:id", async (req, res) => {
   }
 });
 
-router.delete("/veiculos/:id", async (req, res) => {
+router.delete("/veiculos/:id", authMiddleware(), async (req, res) => {
   const { id } = req.params;
 
   try {
