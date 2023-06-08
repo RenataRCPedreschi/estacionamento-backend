@@ -1,6 +1,8 @@
 const { DataTypes, UUID } = require("sequelize");
 const { connection } = require("../database/database");
 const Usuario = require("./usuario");
+const Avaliacao = require("./avaliacao");
+const Vaga = require("./vaga");
 
 const Registro = connection.define('registro', {
     id: {
@@ -16,16 +18,15 @@ const Registro = connection.define('registro', {
     data_fim: {
         type: DataTypes.DATE,
         allowNull: false,
-        unique: true
     },
 });
 
 Vaga.hasMany(Registro, {
     onDelete: "CASCADE"
   });
-// Faltando implementar o model de avaliacao
 Registro.belongsTo(Avaliacao);
 Registro.belongsTo(Usuario);
 Registro.belongsTo(Vaga);
 Usuario.hasMany(Registro, {onDelete: "CASCADE"});
-module.exports = Usuario;
+
+module.exports = Registro;
