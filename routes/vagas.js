@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const Vaga = require("../models/vaga");
 const authMiddleware = require("../middlewares/auth.middleware");
+const { schemaVagas, schemaVagasPut } = require("../utils/validate/schemasVagas");
 
 const router = Router();
 
-router.post("/vagas", authMiddleware(), async (req, res) => {
+router.post("/vagas", schemaVagas, authMiddleware(), async (req, res) => {
     try {
         const { localizacao, preco, tipo, status } = req.body;
         const vaga = await Vaga.create({ localizacao, preco, tipo, status });
@@ -37,7 +38,7 @@ router.get("/vagas", authMiddleware(), async (req, res) => {
     }
 });
 
-router.put("/vagas/:id", authMiddleware(), async (req, res) => {
+router.put("/vagas/:id", schemaVagasPut, authMiddleware(), async (req, res) => {
     const { localizacao, preco, tipo, status } = req.body;
     const vaga = await Vaga.findByPk(req.params.id);
 
