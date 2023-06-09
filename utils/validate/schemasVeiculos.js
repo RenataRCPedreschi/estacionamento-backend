@@ -26,15 +26,9 @@ const schemaVeiculos = celebrate(
 const schemaVeiculosPut = celebrate(
     {
         body: Joi.object().keys({
-            placa: Joi.string().required().messages({
-                "string.empty": "A placa é obrigatória",
-            }),
-            modelo: Joi.string().required().messages({
-                "string.empty": "O modelo é obrigatório",
-            }),
-            cor: Joi.string().required().messages({
-                "string.empty": "A cor é obrigatória",
-            })
+            placa: Joi.string().required(),
+            modelo: Joi.string().required(),
+            cor: Joi.string().required(),
         }),
     },
     {
