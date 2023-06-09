@@ -2,6 +2,7 @@ const { Router } = require("express");
 const Usuario = require("../models/usuario");
 const authMiddleware = require("../middlewares/auth.middleware");
 const bcrypt = require('bcryptjs');
+const { schemaUsuarioPut } = require("../utils/validate/schemasUsuarios");
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router.get("/usuarios", authMiddleware(), async (req, res) => {
     }
 });
 
-router.put("/usuarios/:id", authMiddleware(), async (req, res) => {
+router.put("/usuarios/:id", schemaUsuarioPut ,authMiddleware(), async (req, res) => {
     const { nome, email } = req.body;
     let { senha } = req.body;
     const saltRounds = 10;
