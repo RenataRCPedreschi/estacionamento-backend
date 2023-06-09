@@ -1,9 +1,10 @@
 const { Router } = require("express");
 
 const Avaliacao = require("../models/avaliacao");
+const { schemaAvaliacoes, schemaAvaliacoesPut } = require("../utils/validate/schemasAvaliacoes");
 const router = Router();
 
-router.post("/avaliacoes", async (req, res) => {
+router.post("/avaliacoes", schemaAvaliacoes, async (req, res) => {
     try {
         const { nota, comentario, vagaId, usuarioId } = req.body;
         if(vagaId && usuarioId){
@@ -43,7 +44,7 @@ router.get("/avaliacoes", async (req, res) => {
     }
 })
 
-router.put("/avaliacoes/:id", async (req, res) => {
+router.put("/avaliacoes/:id", schemaAvaliacoesPut, async (req, res) => {
     const { nota, comentario } = req.body;
     const avaliacao = await Avaliacao.findByPk(req.params.id);
 
