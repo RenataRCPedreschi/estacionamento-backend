@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const Registro = require("../models/registro");
 const authMiddleware = require("../middlewares/auth.middleware");
+const { schemasRegistros, schemasRegistrosPut } = require("../utils/validate/schemasRegistros");
 
 const router = Router();
 
-router.post("/registros", authMiddleware(), async (req, res) => {
+router.post("/registros", schemasRegistros, authMiddleware(), async (req, res) => {
     try {
         const { data_inicio, data_fim, vagaId, usuarioId } = req.body;
         if (vagaId && usuarioId) {
@@ -44,7 +45,7 @@ router.get("/registros", authMiddleware(), async (req, res) => {
     }
 });
 
-router.put("/registros/:id", authMiddleware(), async (req, res) => {
+router.put("/registros/:id", schemasRegistrosPut ,authMiddleware(), async (req, res) => {
     const { data_inicio, data_fim } = req.body;
     const registro = await Registro.findByPk(req.params.id);
 
